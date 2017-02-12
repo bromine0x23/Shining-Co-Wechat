@@ -29,7 +29,7 @@ class WechatsController < ApplicationController
 		select(request, option0, option1)
 	end
 
-	on :text, with: /\A(?<subject>\S*?)(?<predicate>\S+)(?<negative>[不没])\k<predicate>(?<object>\S*?)(?:[啦呢啊阿!?！？]*)\Z/ do |request, subject, predicate, negative, object|
+	on :text, with: /\A(?<subject>\S*)(?<predicate>\S+)(?<negative>[不没])\k<predicate>(?<object>\S*?)(?:[啦呢啊阿]?[!?！？]?)\Z/ do |request, subject, predicate, negative, object|
 		judge(request, subject, predicate, negative, object)
 	end
 
@@ -42,7 +42,7 @@ class WechatsController < ApplicationController
 		request.reply.text fortune_service.fortune(sender, time)
 	end
 
-	def select(option0, option1)
+	def select(request, option0, option1)
 		time = Time.at(request[:CreateTime].to_i)
 		request.reply.text select_service.select(option0, option1, time)
 	end

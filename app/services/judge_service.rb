@@ -10,15 +10,15 @@ class JudgeService
 	# @param [Time] time
 	def judge(sender, subject, predicate, negative, object, time = Time.now)
 		if subject.blank? || subject == '我'
-			subject_sum = subject.sum
-		else
 			subject = '你'
 			subject_sum = sender.sum
-		end
-		if random_service.pseudo_random(random_service.date_seed(time), (subject_sum ^ action.sum ^ object.sum), 11113).odd?
-			format(I18n.t('select.yes', 主语: subject, 谓语: predicate, 宾语: object))
 		else
-			format(I18n.t('select.no', 主语: subject, 谓语: predicate, 宾语: object, 否定词: negative))
+			subject_sum = subject.sum
+		end
+		if random_service.pseudo_random(random_service.date_seed(time), (subject_sum ^ predicate.sum ^ object.sum), 11113).odd?
+			format(I18n.t('judge.positive'), 主语: subject, 谓语: predicate, 宾语: object)
+		else
+			format(I18n.t('judge.negative'), 主语: subject, 谓语: predicate, 宾语: object, 否定词: negative)
 		end
 	end
 
